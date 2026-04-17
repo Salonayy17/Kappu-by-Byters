@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <meta name="theme-color" content="#0a0a0f"/>
+  <title>Kāppu — Dashboard</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body class="app-page">
+
+  <!-- Toast notification -->
+  <div id="toast" class="toast" style="display:none"></div>
+
+  <!-- ── TOP STATUS BAR ── -->
+  <div class="app-statusbar">
+    <div class="sb-left">
+      <div class="sb-logo">⚡ Kāppu</div>
+    </div>
+    <div class="sb-right">
+      <div class="sb-worker" id="sbWorker">Ravi</div>
+      <div class="sb-city" id="sbCity">Chennai</div>
+    </div>
+  </div>
+
+  <!-- ── SCREENS ── -->
+  <div class="app-body">
+
+    <!-- ════ HOME SCREEN ════ -->
+    <div class="screen active" id="screen-home">
+
+      <!-- Shift Activation Card — THE HERO ELEMENT -->
+      <div class="shift-card" id="shiftCard">
+        <div class="sc-header">
+          <div class="sc-label" id="scLabel">Protection OFF</div>
+          <div class="sc-status inactive" id="scStatus">INACTIVE</div>
+        </div>
+
+        <div class="sc-toggle-wrap" onclick="toggleShift()">
+          <div class="sc-toggle" id="scToggle">
+            <div class="sc-toggle-knob"></div>
+          </div>
+          <div class="sc-toggle-label" id="scToggleLabel">Tap to activate shift</div>
+        </div>
+
+        <div class="sc-meta" id="scMeta" style="display:none">
+          <div class="sc-meta-item">
+            <span class="scm-label">Active for</span>
+            <span class="scm-val" id="shiftTimer">00:00</span>
+          </div>
+          <div class="sc-meta-item">
+            <span class="scm-label">Plan</span>
+            <span class="scm-val" id="scPlan">Shift Shield</span>
+          </div>
+          <div class="sc-meta-item">
+            <span class="scm-label">Cost so far</span>
+            <span class="scm-val" id="scCost">₹8</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weather + WII -->
+      <div class="section-card">
+        <div class="sc2-header">
+          <span class="sc2-title">Live Conditions</span>
+          <span class="live-badge">● LIVE</span>
+        </div>
+        <div class="conditions-row">
+          <div class="cond-item">
+            <div class="cond-val" id="condTemp">30°</div>
+            <div class="cond-label">Temp</div>
+          </div>
+          <div class="cond-item">
+            <div class="cond-val" id="condAqi">75</div>
+            <div class="cond-label">AQI</div>
+          </div>
+          <div class="cond-item">
+            <div class="cond-val" id="condRain">0mm</div>
+            <div class="cond-label">Rain</div>
+          </div>
+          <div class="cond-item">
+            <div class="cond-val" id="condWind">12</div>
+            <div class="cond-label">Wind km/h</div>
+          </div>
+        </div>
+
+        <div class="wii-row">
+          <div class="wii-label-row">
+            <span>Weather Impact Index</span>
+            <span class="wii-num" id="wiiNum">0</span>
+          </div>
+          <div class="wii-track">
+            <div class="wii-fill" id="wiiFill" style="width:0%"></div>
+          </div>
+          <div class="wii-desc" id="wiiDesc">Normal conditions</div>
+        </div>
+
+        <!-- Sim controls -->
+        <div class="sim-row">
+          <span class="sim-label">Simulate</span>
+          <button class="sim-btn" onclick="sim('normal')">☀️</button>
+          <button class="sim-btn" onclick="sim('rain')">🌧️</button>
+          <button class="sim-btn active-sim" onclick="sim('storm')">⛈️</button>
+          <button class="sim-btn" onclick="sim('aqi')">😷</button>
+          <button class="sim-btn" onclick="sim('outage')">📵</button>
+          <button class="sim-btn" onclick="sim('bandh')">🚧</button>
+        </div>
+      </div>
+
+      <!-- Disruption Alert -->
+      <div class="disruption-alert" id="disruptionAlert" style="display:none">
+        <div class="da-icon" id="daIcon">⛈️</div>
+        <div class="da-body">
+          <div class="da-title" id="daTitle">Storm Detected</div>
+          <div class="da-desc" id="daDesc">Coverage is active for your shift</div>
+        </div>
+        <button class="da-claim" onclick="goToTab('claims')">Claim →</button>
+      </div>
+
+      <!-- Solidarity Feed -->
+      <div class="section-card">
+        <div class="sc2-header">
+          <span class="sc2-title">Solidarity Feed</span>
+          <span class="feed-count" id="feedCount">0 near you</span>
+        </div>
+        <div class="solidarity-feed" id="solidarityFeed">
+          <div class="feed-empty">Activate a disruption to see live claims</div>
+        </div>
+        <div class="peer-verify-banner" id="peerBanner" style="display:none">
+          <span>🤝 Peer verification active — auto-approving claims in your zone</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ════ CLAIMS SCREEN ════ -->
+    <div class="screen" id="screen-claims">
+
+      <div class="screen-title">Claims & Payouts</div>
+
+      <!-- New Claim Card -->
+      <div class="claim-trigger-card" id="claimTriggerCard">
+        <div class="ctc-icon">📋</div>
+        <div class="ctc-body">
+          <div class="ctc-title">Report a Disruption</div>
+          <div class="ctc-desc">Get compensated for lost shift income</div>
+        </div>
+        <button class="ctc-btn" onclick="startClaim()">Start →</button>
+      </div>
+
+      <!-- What you can claim -->
+      <div class="section-card">
+        <div class="sc2-title" style="margin-bottom:0.8rem">What triggers a payout</div>
+        <div class="trigger-list">
+          <div class="tl-item"><span class="tl-icon">🌧️</span><div class="tl-body"><div class="tl-name">Heavy Rain / Flooding</div><div class="tl-cond">IMD &gt;15mm/hr in your zone</div></div><span class="tl-payout">₹300–500/shift</span></div>
+          <div class="tl-item"><span class="tl-icon">🌡️</span><div class="tl-body"><div class="tl-name">Extreme Heat</div><div class="tl-cond">&gt;43°C for 2+ hours during shift</div></div><span class="tl-payout">₹250–400/shift</span></div>
+          <div class="tl-item"><span class="tl-icon">😷</span><div class="tl-body"><div class="tl-name">Severe AQI</div><div class="tl-cond">AQI &gt;300 (Hazardous)</div></div><span class="tl-payout">₹200–350/shift</span></div>
+          <div class="tl-item"><span class="tl-icon">📵</span><div class="tl-body"><div class="tl-name">Platform Outage</div><div class="tl-cond">App down &gt;90 min in your zone</div></div><span class="tl-payout">₹200–350/shift</span></div>
+          <div class="tl-item"><span class="tl-icon">🚧</span><div class="tl-body"><div class="tl-name">Bandh / Curfew</div><div class="tl-cond">Government-declared restriction</div></div><span class="tl-payout">₹500–700/day</span></div>
+          <div class="tl-item"><span class="tl-icon">🌊</span><div class="tl-body"><div class="tl-name">Flash Flood</div><div class="tl-cond">Zone closure due to flooding</div></div><span class="tl-payout">₹400–600/shift</span></div>
+        </div>
+      </div>
+
+      <!-- Claim status flow (shown after claim started) -->
+      <div class="section-card" id="claimStatusCard" style="display:none">
+        <div class="sc2-title" style="margin-bottom:1rem">Claim Status</div>
+        <div class="claim-steps" id="claimSteps">
+          <div class="cstep done" id="cstep1">
+            <div class="cs-dot"></div>
+            <div class="cs-body"><div class="cs-title">Disruption reported</div><div class="cs-desc">You submitted a disruption report</div></div>
+          </div>
+          <div class="cstep" id="cstep2">
+            <div class="cs-dot"></div>
+            <div class="cs-body"><div class="cs-title">Claim submitted</div><div class="cs-desc">In the verification queue</div></div>
+          </div>
+          <div class="cstep" id="cstep3">
+            <div class="cs-dot"></div>
+            <div class="cs-body"><div class="cs-title">AI verification</div><div class="cs-desc" id="cstep3desc">Fraud checks running (5 layers)</div></div>
+          </div>
+          <div class="cstep" id="cstep4">
+            <div class="cs-dot"></div>
+            <div class="cs-body"><div class="cs-title">Payout processing</div><div class="cs-desc">Approved — payment being sent</div></div>
+          </div>
+          <div class="cstep" id="cstep5">
+            <div class="cs-dot"></div>
+            <div class="cs-body"><div class="cs-title">Payout complete</div><div class="cs-desc" id="cstep5desc">Funds credited to your UPI</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- History -->
+      <div class="section-card">
+        <div class="sc2-title" style="margin-bottom:0.8rem">Claim History</div>
+        <div id="claimHistory" class="claim-history"></div>
+      </div>
+
+    </div>
+
+    <!-- ════ FRAUD SCREEN ════ -->
+    <div class="screen" id="screen-fraud">
+
+      <div class="screen-title">Fraud Detection</div>
+
+      <div class="fraud-score-card">
+        <div class="fsc-label">Your Fraud Score</div>
+        <div class="fsc-score" id="fraudScoreBig">--</div>
+        <div class="fsc-verdict" id="fraudVerdict">Run a claim to see your score</div>
+        <div class="fsc-track">
+          <div class="fsc-fill" id="fraudFill" style="width:0%"></div>
+        </div>
+        <div class="fsc-scale"><span>Clean</span><span>Review</span><span>Flagged</span></div>
+      </div>
+
+      <div class="section-card">
+        <div class="sc2-title" style="margin-bottom:0.8rem">5-Layer Verification</div>
+        <div id="fraudChecksUI" class="fraud-checks-list">
+          <div class="fcl-empty">Submit a claim to run fraud checks</div>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="sc2-title" style="margin-bottom:0.5rem">How peer validation works</div>
+        <p class="fraud-explainer">When 5 or more workers in your zone claim the same disruption within 1 hour, Kāppu automatically verifies the event — no photos or evidence required. This is India's first peer-validated parametric insurance.</p>
+      </div>
+
+    </div>
+
+    <!-- ════ PROFILE SCREEN ════ -->
+    <div class="screen" id="screen-profile">
+
+      <div class="screen-title">Profile</div>
+
+      <div class="profile-card">
+        <div class="prof-avatar" id="profAvatar">R</div>
+        <div class="prof-name" id="profName">Ravi Kumar</div>
+        <div class="prof-sub" id="profSub">Zomato · Chennai · Velachery</div>
+      </div>
+
+      <div class="section-card">
+        <div class="sc2-title" style="margin-bottom:0.8rem">Active Plan</div>
+        <div class="plan-detail-card" id="planDetailCard">
+          <div class="pdc-name" id="pdcName">Weekly Shield</div>
+          <div class="pdc-price" id="pdcPrice">₹35/week</div>
+          <div class="pdc-status">● Active</div>
+          <div class="pdc-cover" id="pdcCover">Up to ₹1,500/week coverage</div>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="sc2-title" style="margin-bottom:0.8rem">This Week</div>
+        <div class="week-stats">
+          <div class="ws-item"><span class="ws-label">Shifts protected</span><span class="ws-val" id="wsShifts">0</span></div>
+          <div class="ws-item"><span class="ws-label">Total claimed</span><span class="ws-val" id="wsClaimed">₹0</span></div>
+          <div class="ws-item"><span class="ws-label">Premium paid</span><span class="ws-val" id="wsPremium">₹0</span></div>
+          <div class="ws-item"><span class="ws-label">Fraud score</span><span class="ws-val green-val" id="wsFraud">--</span></div>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="sc2-title" style="margin-bottom:0.5rem">Zone Risk Profile</div>
+        <div class="zone-risk-card" id="zoneRiskCard">
+          <div class="zrc-city" id="zrcCity">Chennai · Velachery</div>
+          <div class="zrc-risk" id="zrcRisk">High Flood Risk Zone</div>
+          <div class="zrc-history" id="zrcHistory">Flooded: Oct 2023, Nov 2021, Dec 2015</div>
+        </div>
+      </div>
+
+      <button class="btn-ghost" style="margin:1rem" onclick="logout()">← Logout</button>
+
+    </div>
+
+  </div>
+
+  <!-- ── BOTTOM NAV ── -->
+  <nav class="bottom-nav">
+    <button class="bnav-item active" id="bnav-home" onclick="goToTab('home')">
+      <span class="bnav-icon">🏠</span>
+      <span>Home</span>
+    </button>
+    <button class="bnav-item" id="bnav-claims" onclick="goToTab('claims')">
+      <span class="bnav-icon">📋</span>
+      <span>Claims</span>
+    </button>
+    <button class="bnav-item" id="bnav-fraud" onclick="goToTab('fraud')">
+      <span class="bnav-icon">🛡️</span>
+      <span>Fraud</span>
+    </button>
+    <button class="bnav-item" id="bnav-profile" onclick="goToTab('profile')">
+      <span class="bnav-icon">👤</span>
+      <span>Profile</span>
+    </button>
+  </nav>
+
+  <!-- Claim Modal -->
+  <div id="claimModal" class="modal-overlay" style="display:none">
+    <div class="modal-sheet">
+      <div class="sheet-handle"></div>
+      <h3>Report Disruption</h3>
+      <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem">Select what stopped your shift</p>
+      <div class="disruption-picker" id="disruptionPicker">
+        <div class="dp-opt" data-type="rain" onclick="selectDisruption('rain')">🌧️ Heavy Rain / Flood</div>
+        <div class="dp-opt" data-type="heat" onclick="selectDisruption('heat')">🌡️ Extreme Heat</div>
+        <div class="dp-opt" data-type="aqi" onclick="selectDisruption('aqi')">😷 Severe AQI</div>
+        <div class="dp-opt" data-type="outage" onclick="selectDisruption('outage')">📵 Platform Outage</div>
+        <div class="dp-opt" data-type="bandh" onclick="selectDisruption('bandh')">🚧 Bandh / Curfew</div>
+        <div class="dp-opt" data-type="flood" onclick="selectDisruption('flood')">🌊 Flash Flood</div>
+      </div>
+      <div class="field-group" style="margin-top:0.8rem">
+        <label>UPI ID for payout</label>
+        <input type="text" id="claimUpi" value="ravi@oksbi" placeholder="yourname@upi"/>
+      </div>
+      <button class="btn-ghost" onclick="closeModal('claimModal')" style="margin-top:0.5rem">Cancel</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

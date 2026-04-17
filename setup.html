@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>Kāppu — Setup</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body class="setup-page">
+
+  <div class="setup-wrap">
+
+    <!-- Step indicator -->
+    <div class="step-bar">
+      <div class="step-fill" id="stepFill" style="width:33%"></div>
+    </div>
+    <div class="step-label" id="stepLabel">Step 1 of 3</div>
+
+    <!-- STEP 1: Profile -->
+    <div class="setup-step active" id="step1">
+      <div class="setup-icon">👤</div>
+      <h2>Tell us about yourself</h2>
+      <p class="setup-sub">So we can personalise your risk score and coverage</p>
+
+      <div class="field-group">
+        <label>Your Name</label>
+        <input type="text" id="workerName" placeholder="Ravi Kumar"/>
+      </div>
+      <div class="field-group">
+        <label>Mobile Number</label>
+        <input type="tel" id="workerPhone" placeholder="9876543210"/>
+      </div>
+      <div class="field-group">
+        <label>Delivery Platform</label>
+        <div class="platform-picker" id="platformPicker">
+          <div class="pp-opt" data-val="Zomato">🛵 Zomato</div>
+          <div class="pp-opt" data-val="Swiggy">🛍️ Swiggy</div>
+          <div class="pp-opt" data-val="Zepto">⚡ Zepto</div>
+          <div class="pp-opt" data-val="Amazon">📦 Amazon</div>
+          <div class="pp-opt" data-val="Blinkit">🏪 Blinkit</div>
+          <div class="pp-opt" data-val="Dunzo">🚴 Dunzo</div>
+        </div>
+      </div>
+      <button class="btn-start" onclick="nextStep(2)">Continue →</button>
+    </div>
+
+    <!-- STEP 2: City + Zone -->
+    <div class="setup-step" id="step2">
+      <div class="setup-icon">📍</div>
+      <h2>Where do you deliver?</h2>
+      <p class="setup-sub">Your zone determines flood risk and premium</p>
+
+      <div class="field-group">
+        <label>City</label>
+        <select id="workerCity" onchange="updateZones()">
+          <option value="">Select city</option>
+          <option value="Chennai">Chennai</option>
+          <option value="Mumbai">Mumbai</option>
+          <option value="Bengaluru">Bengaluru</option>
+          <option value="Hyderabad">Hyderabad</option>
+          <option value="Delhi">Delhi</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label>Delivery Zone</label>
+        <select id="workerZone">
+          <option value="">Select city first</option>
+        </select>
+      </div>
+
+      <div class="flood-memory-card" id="floodCard" style="display:none">
+        <div class="fmc-title">🌊 Zone Flood Memory</div>
+        <div class="fmc-body" id="floodBody"></div>
+      </div>
+
+      <button class="btn-start" onclick="nextStep(3)">Continue →</button>
+      <button class="btn-ghost" onclick="nextStep(1)">← Back</button>
+    </div>
+
+    <!-- STEP 3: Plan -->
+    <div class="setup-step" id="step3">
+      <div class="setup-icon">⚡</div>
+      <h2>Choose your plan</h2>
+      <p class="setup-sub">Based on your zone risk profile</p>
+
+      <div class="risk-banner" id="riskBanner">
+        <div class="rb-score" id="rbScore">--</div>
+        <div class="rb-info">
+          <div class="rb-city" id="rbCity">--</div>
+          <div class="rb-desc" id="rbDesc">Calculating risk...</div>
+        </div>
+      </div>
+
+      <div class="plan-cards" id="planCards">
+
+        <div class="plan-card" data-plan="shift" onclick="selectPlan('shift')">
+          <div class="pc-name">Shift Shield</div>
+          <div class="pc-price">₹8 <span>/ shift</span></div>
+          <div class="pc-detail">Pay only when you work</div>
+          <div class="pc-cover">Cover up to ₹400/shift</div>
+        </div>
+
+        <div class="plan-card selected" data-plan="weekly" onclick="selectPlan('weekly')">
+          <div class="pc-badge">Best Value</div>
+          <div class="pc-name">Weekly Shield</div>
+          <div class="pc-price">₹35 <span>/ week</span></div>
+          <div class="pc-detail">Unlimited shifts covered</div>
+          <div class="pc-cover">Cover up to ₹1,500/week</div>
+        </div>
+
+        <div class="plan-card" data-plan="max" onclick="selectPlan('max')">
+          <div class="pc-name">Max Shield</div>
+          <div class="pc-price">₹50 <span>/ week</span></div>
+          <div class="pc-detail">High-risk zones + monsoon</div>
+          <div class="pc-cover">Cover up to ₹2,500/week</div>
+        </div>
+
+      </div>
+
+      <button class="btn-start" id="activateBtn" onclick="activateAndGo()">Activate Protection →</button>
+      <button class="btn-ghost" onclick="nextStep(2)">← Back</button>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
